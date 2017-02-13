@@ -42,21 +42,6 @@ class Loop {
 		return $this->query;
 	}
 
-	protected function get_query_args() {
-		// @todo Filterable args?
-		$args = [
-			'number' => $this->get_per_page(),
-			'orderby' => 'term_id',
-			'taxonomy' => get_query_var( Endpoints::QUERY_VAR ),
-		];
-
-		if ( 1 < $this->get_current_page() ) {
-			$args['offset'] = ( $this->get_current_page() * $this->get_per_page() ) - $this->get_per_page();
-		}
-
-		return $args;
-	}
-
 	public function get_terms() {
 		if ( is_null( $this->terms ) ) {
 			// WP_Term_Query::$terms might have non-sequential keys.
@@ -93,5 +78,20 @@ class Loop {
 		if ( $this->have_terms() ) {
 			$this->current_term = $this->get_terms()[ $this->pointer++ ];
 		}
+	}
+
+	protected function get_query_args() {
+		// @todo Filterable args?
+		$args = [
+			'number' => $this->get_per_page(),
+			'orderby' => 'term_id',
+			'taxonomy' => get_query_var( Endpoints::QUERY_VAR ),
+		];
+
+		if ( 1 < $this->get_current_page() ) {
+			$args['offset'] = ( $this->get_current_page() * $this->get_per_page() ) - $this->get_per_page();
+		}
+
+		return $args;
 	}
 }

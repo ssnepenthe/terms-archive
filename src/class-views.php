@@ -3,33 +3,6 @@
 namespace SSNepenthe\Terms_Archive;
 
 class Views {
-	public function init() {
-		add_filter( 'body_class', [ $this, 'add_body_classes' ] );
-		add_filter( 'document_title_parts', [ $this, 'set_document_title' ] );
-		add_filter(
-			'get_the_archive_description',
-			[ $this, 'set_archive_description' ]
-		);
-		add_filter( 'get_the_archive_title', [ $this, 'set_archive_title' ] );
-		add_filter( 'template_include', [ $this, 'template_include' ] );
-	}
-
-	protected function get_queried_taxonomy() {
-		return get_query_var( Endpoints::QUERY_VAR );
-	}
-
-	public function set_archive_description( $description ) {
-		if ( ! ta_is_terms_archive() ) {
-			return $description;
-		}
-
-		if ( ! $tax = get_taxonomy( $this->get_queried_taxonomy() ) ) {
-			return $description;
-		}
-
-		return $tax->description;
-	}
-
 	public function add_body_classes( array $classes ) {
 		if ( ! ta_is_terms_archive() ) {
 			return $classes;
@@ -45,23 +18,27 @@ class Views {
 		] );
 	}
 
-	public function template_include( $template ) {
+	public function init() {
+		add_filter( 'body_class', [ $this, 'add_body_classes' ] );
+		add_filter( 'document_title_parts', [ $this, 'set_document_title' ] );
+		add_filter(
+			'get_the_archive_description',
+			[ $this, 'set_archive_description' ]
+		);
+		add_filter( 'get_the_archive_title', [ $this, 'set_archive_title' ] );
+		add_filter( 'template_include', [ $this, 'template_include' ] );
+	}
+
+	public function set_archive_description( $description ) {
 		if ( ! ta_is_terms_archive() ) {
-			return $template;
+			return $description;
 		}
 
-		$tax = preg_replace(
-			'/[^a-zA-Z0-9-_]/',
-			'',
-			$this->get_queried_taxonomy()
-		);
+		if ( ! $tax = get_taxonomy( $this->get_queried_taxonomy() ) ) {
+			return $description;
+		}
 
-		$new_template = get_query_template( 'swbp-terms-archive', [
-			"ta-terms-archive-{$tax}.php",
-			'ta-terms-archive.php',
-		] );
-
-		return $new_template ?: $template;
+		return $tax->description;
 	}
 
 	public function set_archive_title( $title ) {
@@ -88,5 +65,28 @@ class Views {
 		$parts['title'] = esc_html( $tax->label );
 
 		return $parts;
+	}
+
+	public function template_include( $template ) {
+		if ( ! ta_is_terms_archive() ) {
+			return $template;
+		}
+
+		$tax = preg_replace(
+			'/[^a-zA-Z0-9-_]/',
+			'',
+			$this->get_queried_taxonomy()
+		);
+
+		$new_template = get_query_template( 'swbp-terms-archive', [
+			"ta-terms-archive-{$tax}.php",
+			'ta-terms-archive.php',
+		] );
+
+		return $new_template ?: $template;
+	}
+
+	protected function get_queried_taxonomy() {
+		return get_query_var( Endpoints::QUERY_VAR );
 	}
 }

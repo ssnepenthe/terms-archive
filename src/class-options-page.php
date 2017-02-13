@@ -9,11 +9,6 @@ class Options_Page {
 		$this->settings = $settings;
 	}
 
-	public function init() {
-		add_action( 'admin_init', [ $this, 'admin_init' ] );
-		add_action( 'admin_menu', [ $this, 'admin_menu' ] );
-	}
-
 	public function admin_init() {
 		register_setting(
 			'ta_settings_group',
@@ -47,21 +42,9 @@ class Options_Page {
 		);
 	}
 
-	public function render_page_terms_archive() {
-		echo '<div class="wrap">';
-		echo '<h1>' . esc_html( get_admin_page_title() ) . '</h1>';
-		echo '<form action="options.php" method="POST">';
-
-		settings_fields( 'ta_settings_group' );
-		do_settings_sections( 'terms-archive' );
-		submit_button();
-
-		echo '</form>';
-		echo '</div>';
-	}
-
-	public function render_section_main() {
-		echo 'Use the fields below to configure the terms archive plugin.';
+	public function init() {
+		add_action( 'admin_init', [ $this, 'admin_init' ] );
+		add_action( 'admin_menu', [ $this, 'admin_menu' ] );
 	}
 
 	public function render_disabled_taxonomies() {
@@ -97,6 +80,23 @@ class Options_Page {
 
 			echo '</fieldset>';
 		}
+	}
+
+	public function render_page_terms_archive() {
+		echo '<div class="wrap">';
+		echo '<h1>' . esc_html( get_admin_page_title() ) . '</h1>';
+		echo '<form action="options.php" method="POST">';
+
+		settings_fields( 'ta_settings_group' );
+		do_settings_sections( 'terms-archive' );
+		submit_button();
+
+		echo '</form>';
+		echo '</div>';
+	}
+
+	public function render_section_main() {
+		echo 'Use the fields below to configure the terms archive plugin.';
 	}
 
 	public function sanitize( $values ) {

@@ -15,65 +15,8 @@ class Endpoints {
 		$this->loop = $loop;
 	}
 
-	public function init() {
-		add_filter(
-			'current_theme_supports-ta-terms-archive',
-			[ $this, 'current_theme_supports' ],
-			10,
-			3
-		);
-		add_filter(
-			'pre_handle_404',
-			[ $this, 'preempt_404_on_terms_archives' ],
-			10,
-			2
-		);
-		add_filter( 'query_vars', [ $this, 'add_query_var' ] );
-
-		add_action( 'parse_query', [ $this, 'modify_wp_query_issers' ], 1 );
-		add_action(
-			'posts_pre_query',
-			[ $this, 'short_circuit_main_query' ],
-			10,
-			2
-		);
-		add_action( 'registered_taxonomy', [ $this, 'add_rewrites' ], 10, 3 );
-	}
-
-	public function preempt_404_on_terms_archives( $preempt, $query ) {
-		if ( ! $query->ta_is_terms_archive ) {
-			return $preempt;
-		}
-
-		return true;
-	}
-
-	public function short_circuit_main_query( $posts, $query ) {
-		if ( ! $query->ta_is_terms_archive || ! $query->is_main_query() ) {
-			return $posts;
-		}
-
-		return false;
-	}
-
-	public function current_theme_supports( $supports, $args, $feature ) {
-		if ( true === $feature ) {
-			// All public taxonomies are supported.
-			return $supports;
-		}
-
-		// Otherwise $feature is an array.
-		$feat = current( $feature );
-
-		if ( is_string( $feat ) ) {
-			return $args[0] === $feat;
-		}
-
-		if ( is_array( $feat ) ) {
-			return in_array( $args[0], $feat, true );
-		}
-
-		return false;
+	public function add_query_var( array $query_vars ) {
+		return array_merge( $query_vars, [ self::QUERY_VAR ] );
 	}
 
 	public function add_rewrites( $taxonomy, $object, $args ) {
@@ -114,8 +57,49 @@ class Endpoints {
 		}
 	}
 
-	public function add_query_var( array $query_vars ) {
-		return array_merge( $query_vars, [ self::QUERY_VAR ] );
+	public function current_theme_supports( $supports, $args, $feature ) {
+		if ( true === $feature ) {
+			// All public taxonomies are supported.
+			return $supports;
+		}
+
+		// Otherwise $feature is an array.
+		$feat = current( $feature );
+
+		if ( is_string( $feat ) ) {
+			return $args[0] === $feat;
+		}
+
+		if ( is_array( $feat ) ) {
+			return in_array( $args[0], $feat, true );
+		}
+
+		return false;
+	}
+
+	public function init() {
+		add_filter(
+			'current_theme_supports-ta-terms-archive',
+			[ $this, 'current_theme_supports' ],
+			10,
+			3
+		);
+		add_filter(
+			'pre_handle_404',
+			[ $this, 'preempt_404_on_terms_archives' ],
+			10,
+			2
+		);
+		add_filter( 'query_vars', [ $this, 'add_query_var' ] );
+
+		add_action( 'parse_query', [ $this, 'modify_wp_query_issers' ], 1 );
+		add_action(
+			'posts_pre_query',
+			[ $this, 'short_circuit_main_query' ],
+			10,
+			2
+		);
+		add_action( 'registered_taxonomy', [ $this, 'add_rewrites' ], 10, 3 );
 	}
 
 	public function modify_wp_query_issers( WP_Query $query ) {
@@ -134,5 +118,21 @@ class Endpoints {
 
 		$query->is_home = false;
 		$query->ta_is_terms_archive = true;
+	}
+
+	public function preempt_404_on_terms_archives( $preempt, $query ) {
+		if ( ! $query->ta_is_terms_archive ) {
+			return $preempt;
+		}
+
+		return true;
+	}
+
+	public function short_circuit_main_query( $posts, $query ) {
+		if ( ! $query->ta_is_terms_archive || ! $query->is_main_query() ) {
+			return $posts;
+		}
+
+		return false;
 	}
 }
