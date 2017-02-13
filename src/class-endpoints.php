@@ -178,6 +178,7 @@ class Endpoints {
 			! $queried_tax
 			|| ! in_array( $queried_tax, $this->taxonomy_whitelist, true )
 			|| $current_page > $this->loop->get_total_pages()
+			|| 1 > count( $this->loop->get_terms() )
 		) {
 			return;
 		}
