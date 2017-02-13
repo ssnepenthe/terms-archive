@@ -7,8 +7,6 @@
 
 namespace SSNepenthe\Terms_Archive;
 
-use Pimple\Container;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
@@ -16,25 +14,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * This class coordinates between the plugin and WordPress.
  */
-class Plugin extends Container {
-	/**
-	 * Class constructor.
-	 *
-	 * @param array $values Services to register with pimple.
-	 */
-	public function __construct( array $values = [] ) {
-		parent::__construct( $values );
-
-		$this->register_services();
-	}
+class Plugin {
+	protected $settings;
 
 	/**
 	 * Activation hook function.
 	 */
 	public function activate() {
-		$this['settings']->set( 'disabled', [] );
-		$this['settings']->set( 'version', '0.1.0' );
-		$this['settings']->save();
+		$this->get_settings()->set( 'disabled', [] );
+		$this->get_settings()->set( 'version', '0.1.0' );
+		$this->get_settings()->save();
 
 		delete_option( 'rewrite_rules' );
 	}
@@ -62,7 +51,7 @@ class Plugin extends Container {
 			return;
 		}
 
-		( new Options_Page( $this['settings'] ) )->init();
+		( new Options_Page( $this->get_settings() ) )->init();
 	}
 
 	/**
@@ -71,8 +60,8 @@ class Plugin extends Container {
 	protected function plugin_init() {
 		$features = [
 			new Endpoints(
-				$this['settings']->get( 'disabled', [] ),
-				$this['loop']
+				$this->get_settings()->get( 'disabled', [] ),
+				$this->get_loop()
 			),
 			new Views,
 		];
@@ -82,28 +71,25 @@ class Plugin extends Container {
 		}
 	}
 
-	/**
-	 * Register services with pimple.
-	 */
-	protected function register_services() {
-		$this['loop'] = function( Container $c ) {
-			/**
-			 * Store in global for easy access from template files, queries are
-			 * performed on demand so there should be no real worry about unnecessary
-			 * overhead on pages where loop is unused.
-			 */
+	protected function get_loop() {
+		/**
+		 * Store in global for easy access from template files, queries are performed
+		 * on demand so there should be no real worry about unnecessary overhead on
+		 * pages where loop is unused.
+		 */
+		if ( ! isset( $GLOBALS['ta_loop'] ) ) {
 			$GLOBALS['ta_loop'] = new Loop;
+		}
 
-			return $GLOBALS['ta_loop'];
-		};
+		return $GLOBALS['ta_loop'];
+	}
 
-		$this['settings'] = function( Container $c ) {
-			$settings = new Map_Option( $c['settings.key'] );
-			$settings->init();
+	protected function get_settings() {
+		if ( is_null( $this->settings ) ) {
+			$this->settings = new Map_Option( 'ta_settings' );
+			$this->settings->init();
+		}
 
-			return $settings;
-		};
-
-		$this['settings.key'] = 'ta_settings';
+		return $this->settings;
 	}
 }
