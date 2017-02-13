@@ -9,6 +9,10 @@ namespace SSNepenthe\Terms_Archive;
 
 use Pimple\Container;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 /**
  * This class coordinates between the plugin and WordPress.
  */

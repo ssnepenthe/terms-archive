@@ -7,6 +7,10 @@
 
 namespace SSNepenthe\Terms_Archive;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 /**
  * This class prepares the output to go along with the various rewrite rules added by
  * this plugin.

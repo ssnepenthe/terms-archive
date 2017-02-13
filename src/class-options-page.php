@@ -7,6 +7,10 @@
 
 namespace SSNepenthe\Terms_Archive;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 /**
  * This class handles outputting the settings page and sanitizing pluign settings.
  */

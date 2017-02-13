@@ -9,6 +9,10 @@ namespace SSNepenthe\Terms_Archive;
 
 use WP_Query;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 /**
  * This class handles adding rewrite rules and setting WordPress up to understand
  * what is happening at each of these endpoints.

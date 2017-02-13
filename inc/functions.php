@@ -5,6 +5,10 @@
  * @package terms-archive
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 if ( ! function_exists( 'ta_get_current_term' ) ) {
 	/**
 	 * Get the current term in the global loop.
