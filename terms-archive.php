@@ -26,12 +26,25 @@ if ( file_exists( $ta_autoloader ) ) {
 	require_once $ta_autoloader;
 }
 
-// @todo Requirements checker.
+$ta_checker = new SSNepenthe\Terms_Archive\Requirements_Checker(
+	'Terms Archive',
+	plugin_basename( __FILE__ )
+);
 
-$ta_plugin = new SSNepenthe\Terms_Archive\Plugin;
-$ta_plugin->init();
+// Short array syntax.
+$ta_checker->set_min_php( '5.4' );
 
-register_activation_hook( __FILE__, [ $ta_plugin, 'activate' ] );
-register_deactivation_hook( __FILE__, [ $ta_plugin, 'deactivate' ] );
+// Uses register_setting() with an array of args.
+$ta_checker->set_min_wp( '4.7' );
 
-unset( $ta_autoloader, $ta_plugin );
+if ( $ta_checker->requirements_met() ) {
+	$ta_plugin = new SSNepenthe\Terms_Archive\Plugin;
+	$ta_plugin->init();
+
+	register_activation_hook( __FILE__, [ $ta_plugin, 'activate' ] );
+	register_deactivation_hook( __FILE__, [ $ta_plugin, 'deactivate' ] );
+} else {
+	$ta_checker->deactivate_and_notify();
+}
+
+unset( $ta_autoloader, $ta_checker, $ta_plugin );
