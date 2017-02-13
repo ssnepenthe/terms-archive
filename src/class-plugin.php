@@ -1,16 +1,32 @@
 <?php
+/**
+ * The main plugin bootstrap.
+ *
+ * @package terms-archive
+ */
 
 namespace SSNepenthe\Terms_Archive;
 
 use Pimple\Container;
 
+/**
+ * This class coordinates between the plugin and WordPress.
+ */
 class Plugin extends Container {
+	/**
+	 * Class constructor.
+	 *
+	 * @param array $values Services to register with pimple.
+	 */
 	public function __construct( array $values = [] ) {
 		parent::__construct( $values );
 
 		$this->register_services();
 	}
 
+	/**
+	 * Activation hook function.
+	 */
 	public function activate() {
 		$this['settings']->set( 'disabled', [] );
 		$this['settings']->set( 'version', '0.1.0' );
@@ -19,15 +35,24 @@ class Plugin extends Container {
 		delete_option( 'rewrite_rules' );
 	}
 
+	/**
+	 * Deactivation hook function.
+	 */
 	public function deactivate() {
 		delete_option( 'rewrite_rules' );
 	}
 
+	/**
+	 * Initialize the plugin.
+	 */
 	public function init() {
 		$this->admin_init();
 		$this->plugin_init();
 	}
 
+	/**
+	 * Initialize the admin portion of the plugin.
+	 */
 	protected function admin_init() {
 		if ( ! is_admin() ) {
 			return;
@@ -36,6 +61,9 @@ class Plugin extends Container {
 		( new Options_Page( $this['settings'] ) )->init();
 	}
 
+	/**
+	 * Initialize the main plugin functionality.
+	 */
 	protected function plugin_init() {
 		$features = [
 			new Endpoints(
@@ -50,6 +78,9 @@ class Plugin extends Container {
 		}
 	}
 
+	/**
+	 * Register services with pimple.
+	 */
 	protected function register_services() {
 		$this['loop'] = function( Container $c ) {
 			/**

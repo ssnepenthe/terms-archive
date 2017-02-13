@@ -1,14 +1,35 @@
 <?php
+/**
+ * The plugin settings page.
+ *
+ * @package terms-archive
+ */
 
 namespace SSNepenthe\Terms_Archive;
 
+/**
+ * This class handles outputting the settings page and sanitizing pluign settings.
+ */
 class Options_Page {
+	/**
+	 * Settings instance.
+	 *
+	 * @var Map_Option
+	 */
 	protected $settings;
 
+	/**
+	 * Class constructor.
+	 *
+	 * @param Map_Option $settings Settings instance.
+	 */
 	public function __construct( Map_Option $settings ) {
 		$this->settings = $settings;
 	}
 
+	/**
+	 * Registers settings, sections and fields.
+	 */
 	public function admin_init() {
 		register_setting(
 			'ta_settings_group',
@@ -32,6 +53,9 @@ class Options_Page {
 		);
 	}
 
+	/**
+	 * Adds the options page.
+	 */
 	public function admin_menu() {
 		add_options_page(
 			'Terms Archive Configuration',
@@ -42,11 +66,17 @@ class Options_Page {
 		);
 	}
 
+	/**
+	 * Hooks the class in to WordPress.
+	 */
 	public function init() {
 		add_action( 'admin_init', [ $this, 'admin_init' ] );
 		add_action( 'admin_menu', [ $this, 'admin_menu' ] );
 	}
 
+	/**
+	 * Renders the disabled taxonomies field.
+	 */
 	public function render_disabled_taxonomies() {
 		$taxonomies = $this->get_valid_taxonomies();
 		$ignored = (array) $this->settings->get( 'disabled', [] );
@@ -82,6 +112,9 @@ class Options_Page {
 		}
 	}
 
+	/**
+	 * Renders the actual settings page.
+	 */
 	public function render_page_terms_archive() {
 		echo '<div class="wrap">';
 		echo '<h1>' . esc_html( get_admin_page_title() ) . '</h1>';
@@ -95,10 +128,20 @@ class Options_Page {
 		echo '</div>';
 	}
 
+	/**
+	 * Renders the main section.
+	 */
 	public function render_section_main() {
 		echo 'Use the fields below to configure the terms archive plugin.';
 	}
 
+	/**
+	 * Sanitized the plugin setting on save.
+	 *
+	 * @param  array $values Values provided by form.
+	 *
+	 * @return array
+	 */
 	public function sanitize( $values ) {
 		$sanitized = [];
 
@@ -121,12 +164,22 @@ class Options_Page {
 		return $sanitized;
 	}
 
+	/**
+	 * Get a list of public taxonomies supported by the current theme.
+	 *
+	 * @return array
+	 */
 	protected function get_valid_taxonomies() {
-		return array_values( array_filter( get_taxonomies( [
-			'public'             => true,
-			'publicly_queryable' => true
-		] ), function( $taxo ) {
-			return current_theme_supports( 'ta-terms-archive', $taxo );
-		} ) );
+		return array_values(
+			array_filter(
+				get_taxonomies( [
+					'public'             => true,
+					'publicly_queryable' => true,
+				] ),
+				function( $taxo ) {
+					return current_theme_supports( 'ta-terms-archive', $taxo );
+				}
+			)
+		);
 	}
 }

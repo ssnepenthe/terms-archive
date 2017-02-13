@@ -1,6 +1,16 @@
 <?php
+/**
+ * Plugin functions for easing theme development.
+ *
+ * @package terms-archive
+ */
 
 if ( ! function_exists( 'ta_get_current_term' ) ) {
+	/**
+	 * Get the current term in the global loop.
+	 *
+	 * @return null|WP_Term
+	 */
 	function ta_get_current_term() {
 		if ( is_null( $loop = ta_get_loop() ) ) {
 			return null;
@@ -11,6 +21,11 @@ if ( ! function_exists( 'ta_get_current_term' ) ) {
 }
 
 if ( ! function_exists( 'ta_get_loop' ) ) {
+	/**
+	 * Get the global loop.
+	 *
+	 * @return null|SSNepenthe\Terms_Archive\Loop
+	 */
 	function ta_get_loop() {
 		global $ta_loop;
 
@@ -27,6 +42,11 @@ if ( ! function_exists( 'ta_get_loop' ) ) {
 }
 
 if ( ! function_exists( 'ta_get_queried_taxonomy' ) ) {
+	/**
+	 * Get the "ta_tax" query var.
+	 *
+	 * @return string
+	 */
 	function ta_get_queried_taxonomy() {
 		if ( ! ta_is_terms_archive() ) {
 			return '';
@@ -37,6 +57,14 @@ if ( ! function_exists( 'ta_get_queried_taxonomy' ) ) {
 }
 
 if ( ! function_exists( 'ta_get_term_class' ) ) {
+	/**
+	 * Get the class list that applies to the current term.
+	 *
+	 * @param  string|array $class List of extra classes to apply, space delimited
+	 *                             if given as a string.
+	 *
+	 * @return array
+	 */
 	function ta_get_term_class( $class = [] ) {
 		if ( ! is_array( $class ) ) {
 			$class = preg_split( '/\s+/', $class );
@@ -48,7 +76,7 @@ if ( ! function_exists( 'ta_get_term_class' ) ) {
 			return $classes;
 		}
 
-		$classes[] = 'ta-term-' . ta_get_term_ID();
+		$classes[] = 'ta-term-' . ta_get_term_id();
 		$classes[] = 'ta-term-taxonomy-' . sanitize_html_class(
 			ta_get_term_taxonomy()
 		);
@@ -57,7 +85,7 @@ if ( ! function_exists( 'ta_get_term_class' ) ) {
 			'ta_term_class',
 			$classes,
 			$class,
-			ta_get_term_ID()
+			ta_get_term_id()
 		);
 
 		return array_unique( array_map( 'esc_attr', $classes ) );
@@ -65,6 +93,14 @@ if ( ! function_exists( 'ta_get_term_class' ) ) {
 }
 
 if ( ! function_exists( 'ta_get_term_content' ) ) {
+	/**
+	 * Get the description for a given term, falling back to the current term.
+	 *
+	 * @param  null|int|WP_Term $term     Term ID or WP_Term object.
+	 * @param  string           $taxonomy Taxonomy to look in.
+	 *
+	 * @return string
+	 */
 	function ta_get_term_content( $term = null, $taxonomy = '' ) {
 		$initialized = ! is_null( $loop = ta_get_loop() );
 
@@ -72,7 +108,7 @@ if ( ! function_exists( 'ta_get_term_content' ) ) {
 			$taxonomy = ta_get_queried_taxonomy();
 		}
 
-		$id = ta_get_term_ID( $term, $taxonomy );
+		$id = ta_get_term_id( $term, $taxonomy );
 
 		if ( 0 === $id ) {
 			return '';
@@ -83,6 +119,14 @@ if ( ! function_exists( 'ta_get_term_content' ) ) {
 }
 
 if ( ! function_exists( 'ta_get_term_count' ) ) {
+	/**
+	 * Get the post count for a given term, falling back to the current term.
+	 *
+	 * @param  null|int|WP_Term $term     Term ID or WP_Term object.
+	 * @param  string           $taxonomy The taxonomy to look in.
+	 *
+	 * @return int
+	 */
 	function ta_get_term_count( $term = null, $taxonomy = '' ) {
 		$initialized = ! is_null( $loop = ta_get_loop() );
 
@@ -103,13 +147,29 @@ if ( ! function_exists( 'ta_get_term_count' ) ) {
 }
 
 if ( ! function_exists( 'ta_get_term_description' ) ) {
+	/**
+	 * Alias for ta_get_term_content().
+	 *
+	 * @param  null|int|WP_Term $term     Term ID or WP_Term object.
+	 * @param  string           $taxonomy The taxonomy to look in.
+	 *
+	 * @return string
+	 */
 	function ta_get_term_description( $term = null, $taxonomy = '' ) {
 		return ta_get_term_content( $term, $taxonomy );
 	}
 }
 
-if ( ! function_exists( 'ta_get_term_ID' ) ) {
-	function ta_get_term_ID( $term = null, $taxonomy = '' ) {
+if ( ! function_exists( 'ta_get_term_id' ) ) {
+	/**
+	 * Get the ID for a given term, falling back to the current term.
+	 *
+	 * @param  null|int|WP_Term $term     Term ID or WP_Term object.
+	 * @param  string           $taxonomy The taxonomy to look in.
+	 *
+	 * @return int
+	 */
+	function ta_get_term_id( $term = null, $taxonomy = '' ) {
 		$initialized = ! is_null( $loop = ta_get_loop() );
 
 		if ( is_null( $term ) && ta_is_terms_archive() && $initialized ) {
@@ -124,11 +184,24 @@ if ( ! function_exists( 'ta_get_term_ID' ) ) {
 			$taxonomy = ta_get_queried_taxonomy();
 		}
 
-		return get_term_field( 'term_id', $term, $taxonomy );
+		return (int) get_term_field( 'term_id', $term, $taxonomy );
 	}
 }
 
 if ( ! function_exists( 'ta_get_term_permalink' ) ) {
+	/**
+	 * Get the permalink for a given term, falling back to the current term.
+	 *
+	 * $term can technically be a slug but this results in an uncached query and
+	 * should not be used.
+	 *
+	 * @link https://vip.wordpress.com/documentation/caching/uncached-functions/
+	 *
+	 * @param  null|int|WP_Term $term     Term ID or WP_Term object.
+	 * @param  string           $taxonomy The taxonomy to look in.
+	 *
+	 * @return string
+	 */
 	function ta_get_term_permalink( $term = null, $taxonomy = '' ) {
 		$initialized = ! is_null( $loop = ta_get_loop() );
 
@@ -149,6 +222,14 @@ if ( ! function_exists( 'ta_get_term_permalink' ) ) {
 }
 
 if ( ! function_exists( 'ta_get_term_taxonomy' ) ) {
+	/**
+	 * Get the taxonomy a given term belongs to, falling back to the current term.
+	 *
+	 * @param  null|int|WP_Term $term     Term ID or WP_Term object.
+	 * @param  string           $taxonomy The taxonomy to look in.
+	 *
+	 * @return string
+	 */
 	function ta_get_term_taxonomy( $term = null, $taxonomy = '' ) {
 		$initialized = ! is_null( $loop = ta_get_loop() );
 
@@ -169,6 +250,14 @@ if ( ! function_exists( 'ta_get_term_taxonomy' ) ) {
 }
 
 if ( ! function_exists( 'ta_get_term_title' ) ) {
+	/**
+	 * Get the title for a given term, falling back to the current term.
+	 *
+	 * @param  null|int|WP_Term $term     Term ID or WP_Term object.
+	 * @param  string           $taxonomy The taxonomy to look in.
+	 *
+	 * @return string
+	 */
 	function ta_get_term_title( $term = null, $taxonomy = '' ) {
 		$initialized = ! is_null( $loop = ta_get_loop() );
 
@@ -184,7 +273,7 @@ if ( ! function_exists( 'ta_get_term_title' ) ) {
 			$taxonomy = ta_get_queried_taxonomy();
 		}
 
-		// @todo ucfirst?
+		// @todo Ucfirst/ucwords?
 		return apply_filters( 'the_title', get_term_field(
 			'name',
 			$term,
@@ -194,6 +283,13 @@ if ( ! function_exists( 'ta_get_term_title' ) ) {
 }
 
 if ( ! function_exists( 'ta_get_terms_pagination' ) ) {
+	/**
+	 * Get the rendered pagination markup for the current terms loop.
+	 *
+	 * @param  array $args Args passed to pagiante_links().
+	 *
+	 * @return string
+	 */
 	function ta_get_terms_pagination( $args = [] ) {
 		$navigation = '';
 
@@ -211,7 +307,7 @@ if ( ! function_exists( 'ta_get_terms_pagination' ) ) {
 		] );
 
 		// Make sure we get a string back. Plain is the next best thing.
-		if ( isset( $args['type'] ) && 'array' == $args['type'] ) {
+		if ( isset( $args['type'] ) && 'array' === $args['type'] ) {
 			$args['type'] = 'plain';
 		}
 
@@ -230,6 +326,11 @@ if ( ! function_exists( 'ta_get_terms_pagination' ) ) {
 }
 
 if ( ! function_exists( 'ta_have_terms' ) ) {
+	/**
+	 * Check if there are any terms in the current term loop.
+	 *
+	 * @return bool
+	 */
 	function ta_have_terms() {
 		if ( ! ta_is_terms_archive() || is_null( $loop = ta_get_loop() ) ) {
 			return false;
@@ -240,6 +341,11 @@ if ( ! function_exists( 'ta_have_terms' ) ) {
 }
 
 if ( ! function_exists( 'ta_is_terms_archive' ) ) {
+	/**
+	 * Check if the current request is for a terms archive page.
+	 *
+	 * @return bool
+	 */
 	function ta_is_terms_archive() {
 		global $wp_query;
 
@@ -252,6 +358,9 @@ if ( ! function_exists( 'ta_is_terms_archive' ) ) {
 }
 
 if ( ! function_exists( 'ta_the_term' ) ) {
+	/**
+	 * Set up the current term within the term loop.
+	 */
 	function ta_the_term() {
 		if ( ! ta_is_terms_archive() || is_null( $loop = ta_get_loop() ) ) {
 			return;
@@ -262,6 +371,12 @@ if ( ! function_exists( 'ta_the_term' ) ) {
 }
 
 if ( ! function_exists( 'ta_the_term_class' ) ) {
+	/**
+	 * Print the class string which applies to the current term in the loop.
+	 *
+	 * @param  string|array $class List of extra classes to apply, space delimited
+	 *                             if given as a string.
+	 */
 	function ta_the_term_class( $class = [] ) {
 		$classes = ta_get_term_class( $class );
 
