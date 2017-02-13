@@ -11,7 +11,6 @@
     },
     "require-dev": {
         "lucatume/wp-browser": "^1.19",
-        "psy/psysh": "^0.8",
         "wp-coding-standards/wpcs": "^0.10"
     },
     "autoload": {
