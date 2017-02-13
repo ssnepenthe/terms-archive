@@ -278,11 +278,7 @@ if ( ! function_exists( 'ta_get_term_title' ) ) {
 		}
 
 		// @todo Ucfirst/ucwords?
-		return apply_filters( 'the_title', get_term_field(
-			'name',
-			$term,
-			$taxonomy
-		) );
+		return get_term_field( 'name', $term, $taxonomy	 );
 	}
 }
 
