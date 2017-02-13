@@ -15,6 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * This class coordinates between the plugin and WordPress.
  */
 class Plugin {
+	/**
+	 * Settings instance.
+	 *
+	 * @var Map_Option
+	 */
 	protected $settings;
 
 	/**
@@ -55,6 +60,38 @@ class Plugin {
 	}
 
 	/**
+	 * Get the global loop instance, creating it as needed.
+	 *
+	 * @return Loop
+	 */
+	protected function get_loop() {
+		/**
+		 * Store in global for easy access from template files, queries are performed
+		 * on demand so there should be no real worry about unnecessary overhead on
+		 * pages where loop is unused.
+		 */
+		if ( ! isset( $GLOBALS['ta_loop'] ) ) {
+			$GLOBALS['ta_loop'] = new Loop;
+		}
+
+		return $GLOBALS['ta_loop'];
+	}
+
+	/**
+	 * Get the plugin settings instance, creating it as needed.
+	 *
+	 * @return Map_Option
+	 */
+	protected function get_settings() {
+		if ( is_null( $this->settings ) ) {
+			$this->settings = new Map_Option( 'ta_settings' );
+			$this->settings->init();
+		}
+
+		return $this->settings;
+	}
+
+	/**
 	 * Initialize the main plugin functionality.
 	 */
 	protected function plugin_init() {
@@ -69,27 +106,5 @@ class Plugin {
 		foreach ( $features as $feature ) {
 			$feature->init();
 		}
-	}
-
-	protected function get_loop() {
-		/**
-		 * Store in global for easy access from template files, queries are performed
-		 * on demand so there should be no real worry about unnecessary overhead on
-		 * pages where loop is unused.
-		 */
-		if ( ! isset( $GLOBALS['ta_loop'] ) ) {
-			$GLOBALS['ta_loop'] = new Loop;
-		}
-
-		return $GLOBALS['ta_loop'];
-	}
-
-	protected function get_settings() {
-		if ( is_null( $this->settings ) ) {
-			$this->settings = new Map_Option( 'ta_settings' );
-			$this->settings->init();
-		}
-
-		return $this->settings;
 	}
 }
