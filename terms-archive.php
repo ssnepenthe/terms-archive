@@ -26,16 +26,13 @@ if ( file_exists( $ta_autoloader ) ) {
 	require_once $ta_autoloader;
 }
 
-$ta_checker = new SSNepenthe\Terms_Archive\Requirements_Checker(
-	'Terms Archive',
-	plugin_basename( __FILE__ )
-);
+$ta_checker = new WP_Requirements\Plugin_Checker( 'Terms Archive', __FILE__ );
 
 // Short array syntax.
-$ta_checker->set_min_php( '5.4' );
+$ta_checker->php_at_least( '5.4' );
 
 // Uses register_setting() with an array of args.
-$ta_checker->set_min_wp( '4.7' );
+$ta_checker->wp_at_least( '4.7' );
 
 if ( $ta_checker->requirements_met() ) {
 	$ta_plugin = new SSNepenthe\Terms_Archive\Plugin;
