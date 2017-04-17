@@ -129,7 +129,7 @@ class Views {
 			$this->get_queried_taxonomy()
 		);
 
-		$new_template = get_query_template( 'swbp-terms-archive', [
+		$new_template = get_query_template( 'ta-terms-archive', [
 			"ta-terms-archive-{$tax}.php",
 			'ta-terms-archive.php',
 		] );
