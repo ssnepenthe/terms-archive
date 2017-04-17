@@ -82,6 +82,7 @@ if ( ! function_exists( 'ta_get_term_class' ) ) {
 			return $classes;
 		}
 
+		$classes[] = 'ta-term';
 		$classes[] = 'ta-term-' . ta_get_term_id();
 		$classes[] = 'ta-term-taxonomy-' . sanitize_html_class(
 			ta_get_term_taxonomy()
