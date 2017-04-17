@@ -20,11 +20,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
-$ta_autoloader = plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
-
-if ( file_exists( $ta_autoloader ) ) {
-	require_once $ta_autoloader;
+function _ta_require_if_exists( $file ) {
+	if ( file_exists( $file ) ) {
+		require_once $file;
+	}
 }
+
+_ta_require_if_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' );
 
 $ta_checker = new WP_Requirements\Plugin_Checker( 'Terms Archive', __FILE__ );
 
@@ -44,4 +46,4 @@ if ( $ta_checker->requirements_met() ) {
 	$ta_checker->deactivate_and_notify();
 }
 
-unset( $ta_autoloader, $ta_checker, $ta_plugin );
+unset( $ta_checker, $ta_plugin );
