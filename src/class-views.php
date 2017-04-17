@@ -60,7 +60,9 @@ class Views {
 			return $description;
 		}
 
-		if ( ! $tax = get_taxonomy( $this->get_queried_taxonomy() ) ) {
+		$tax = get_taxonomy( $this->get_queried_taxonomy() );
+
+		if ( ! $tax ) {
 			return $description;
 		}
 
@@ -77,7 +79,9 @@ class Views {
 			return $title;
 		}
 
-		if ( ! $tax = get_taxonomy( $this->get_queried_taxonomy() ) ) {
+		$tax = get_taxonomy( $this->get_queried_taxonomy() );
+
+		if ( ! $tax ) {
 			return $title;
 		}
 
@@ -94,7 +98,9 @@ class Views {
 			return $parts;
 		}
 
-		if ( ! $tax = get_taxonomy( $this->get_queried_taxonomy() ) ) {
+		$tax = get_taxonomy( $this->get_queried_taxonomy() );
+
+		if ( ! $tax ) {
 			return $parts;
 		}
 

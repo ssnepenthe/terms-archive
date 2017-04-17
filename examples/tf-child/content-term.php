@@ -1,4 +1,11 @@
-<article id="term-<?php echo esc_attr( ta_get_term_id() ); ?>" <?php ta_the_term_class(); ?>>
+<?php
+/**
+ * Sample template part for term content within the loop.
+ *
+ * @package terms-archive
+ */
+
+?><article id="term-<?php echo esc_attr( ta_get_term_id() ); ?>" <?php ta_the_term_class(); ?>>
 	<?php
 		// Consider implementing featured images for terms. Remember to filter
 		// ta_term_class - Twentyfifteen needs has-post-thumbnail for proper styling.

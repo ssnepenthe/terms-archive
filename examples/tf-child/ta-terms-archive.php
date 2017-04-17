@@ -1,4 +1,11 @@
-<?php get_header(); ?>
+<?php
+/**
+ * Sample template file for displaying a terms archive.
+ *
+ * @package terms-archive
+ */
+
+get_header(); ?>
 	<section id="primary" class="content-area">
 		<main id="main" class="site-main" role="main">
 
@@ -15,11 +22,11 @@
 				<?php get_template_part( 'content', 'term' ); ?>
 			<?php endwhile; ?>
 
-			<?php echo ta_get_terms_pagination( [
+			<?php echo ta_get_terms_pagination( [ // WPCS: XSS OK.
 				'prev_text'          => 'Previous page',
 				'next_text'          => 'Next page',
 				'before_page_number' => '<span class="meta-nav screen-reader-text">Page </span>',
-			] ); // WPCS: XSS OK. ?>
+			] ); ?>
 		<?php else : ?>
 			<?php get_template_part( 'content', 'none' ); ?>
 		<?php endif; ?>

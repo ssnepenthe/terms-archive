@@ -105,7 +105,9 @@ class Map_Option {
 	 * @return array
 	 */
 	public function reset() {
-		return $this->data = [];
+		$this->data = [];
+
+		return $this->data;
 	}
 
 	/**

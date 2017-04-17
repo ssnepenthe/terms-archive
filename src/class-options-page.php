@@ -38,7 +38,9 @@ class Options_Page {
 		register_setting(
 			'ta_settings_group',
 			'ta_settings',
-			[ 'sanitize_callback' => [ $this, 'sanitize' ] ]
+			[
+				'sanitize_callback' => [ $this, 'sanitize' ],
+			]
 		);
 
 		add_settings_section(

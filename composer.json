@@ -11,7 +11,7 @@
     },
     "require-dev": {
         "psy/psysh": "^0.8",
-        "wp-coding-standards/wpcs": "^0.10"
+        "wp-coding-standards/wpcs": "^0.11"
     },
     "autoload": {
         "classmap": ["src/"],

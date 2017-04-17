@@ -1,4 +1,9 @@
 <?php
+/**
+ * Sample chile-theme functions file for displaying a terms archive.
+ *
+ * @package terms-archive
+ */
 
 // Support all public taxonomies except post formats.
 add_action( 'after_setup_theme', function() {
@@ -33,9 +38,13 @@ add_action( 'wp_enqueue_scripts', function() {
 	wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
 } );
 
-// Incomplete - doesn't adjust for singular vs plural and needs some basic styling.
+/**
+ * Print entry meta for a given term.
+ *
+ * Incomplete - doesn't adjust for singular vs plural and needs some basic styling.
+ */
 function tf_child_entry_meta() {
 	echo '<span class="post-count">';
-		echo ta_get_term_count() . ' posts';
+		echo esc_html( ta_get_term_count() ) . ' posts';
 	echo '</span>';
 }

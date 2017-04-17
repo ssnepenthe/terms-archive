@@ -16,7 +16,9 @@ if ( ! function_exists( 'ta_get_current_term' ) ) {
 	 * @return null|WP_Term
 	 */
 	function ta_get_current_term() {
-		if ( is_null( $loop = ta_get_loop() ) ) {
+		$loop = ta_get_loop();
+
+		if ( is_null( $loop ) ) {
 			return null;
 		}
 
@@ -106,7 +108,8 @@ if ( ! function_exists( 'ta_get_term_content' ) ) {
 	 * @return string
 	 */
 	function ta_get_term_content( $term = null, $taxonomy = '' ) {
-		$initialized = ! is_null( $loop = ta_get_loop() );
+		$loop = ta_get_loop();
+		$initialized = ! is_null( $loop );
 
 		if ( ! $taxonomy && $initialized ) {
 			$taxonomy = ta_get_queried_taxonomy();
@@ -132,7 +135,8 @@ if ( ! function_exists( 'ta_get_term_count' ) ) {
 	 * @return int
 	 */
 	function ta_get_term_count( $term = null, $taxonomy = '' ) {
-		$initialized = ! is_null( $loop = ta_get_loop() );
+		$loop = ta_get_loop();
+		$initialized = ! is_null( $loop );
 
 		if ( is_null( $term ) && ta_is_terms_archive() && $initialized ) {
 			$term = $loop->get_current_term();
@@ -174,7 +178,8 @@ if ( ! function_exists( 'ta_get_term_id' ) ) {
 	 * @return int
 	 */
 	function ta_get_term_id( $term = null, $taxonomy = '' ) {
-		$initialized = ! is_null( $loop = ta_get_loop() );
+		$loop = ta_get_loop();
+		$initialized = ! is_null( $loop );
 
 		if ( is_null( $term ) && ta_is_terms_archive() && $initialized ) {
 			$term = $loop->get_current_term();
@@ -207,7 +212,8 @@ if ( ! function_exists( 'ta_get_term_permalink' ) ) {
 	 * @return string
 	 */
 	function ta_get_term_permalink( $term = null, $taxonomy = '' ) {
-		$initialized = ! is_null( $loop = ta_get_loop() );
+		$loop = ta_get_loop();
+		$initialized = ! is_null( $loop );
 
 		if ( is_null( $term ) && ta_is_terms_archive() && $initialized ) {
 			$term = $loop->get_current_term();
@@ -235,7 +241,8 @@ if ( ! function_exists( 'ta_get_term_taxonomy' ) ) {
 	 * @return string
 	 */
 	function ta_get_term_taxonomy( $term = null, $taxonomy = '' ) {
-		$initialized = ! is_null( $loop = ta_get_loop() );
+		$loop = ta_get_loop();
+		$initialized = ! is_null( $loop );
 
 		if ( is_null( $term ) && ta_is_terms_archive() && $initialized ) {
 			$term = $loop->get_current_term();
@@ -263,7 +270,8 @@ if ( ! function_exists( 'ta_get_term_title' ) ) {
 	 * @return string
 	 */
 	function ta_get_term_title( $term = null, $taxonomy = '' ) {
-		$initialized = ! is_null( $loop = ta_get_loop() );
+		$loop = ta_get_loop();
+		$initialized = ! is_null( $loop );
 
 		if ( is_null( $term ) && ta_is_terms_archive() && $initialized ) {
 			$term = $loop->get_current_term();
@@ -278,7 +286,7 @@ if ( ! function_exists( 'ta_get_term_title' ) ) {
 		}
 
 		// @todo Ucfirst/ucwords?
-		return get_term_field( 'name', $term, $taxonomy	 );
+		return get_term_field( 'name', $term, $taxonomy );
 	}
 }
 
@@ -291,9 +299,10 @@ if ( ! function_exists( 'ta_get_terms_pagination' ) ) {
 	 * @return string
 	 */
 	function ta_get_terms_pagination( $args = [] ) {
+		$loop = ta_get_loop();
 		$navigation = '';
 
-		if ( is_null( $loop = ta_get_loop() ) ) {
+		if ( is_null( $loop ) ) {
 			return $navigation;
 		}
 
@@ -323,7 +332,7 @@ if ( ! function_exists( 'ta_get_terms_pagination' ) ) {
 
 		return $navigation;
 	}
-}
+} // End if().
 
 if ( ! function_exists( 'ta_have_terms' ) ) {
 	/**
@@ -332,7 +341,9 @@ if ( ! function_exists( 'ta_have_terms' ) ) {
 	 * @return bool
 	 */
 	function ta_have_terms() {
-		if ( ! ta_is_terms_archive() || is_null( $loop = ta_get_loop() ) ) {
+		$loop = ta_get_loop();
+
+		if ( ! ta_is_terms_archive() || is_null( $loop ) ) {
 			return false;
 		}
 
@@ -362,7 +373,9 @@ if ( ! function_exists( 'ta_the_term' ) ) {
 	 * Set up the current term within the term loop.
 	 */
 	function ta_the_term() {
-		if ( ! ta_is_terms_archive() || is_null( $loop = ta_get_loop() ) ) {
+		$loop = ta_get_loop();
+
+		if ( ! ta_is_terms_archive() || is_null( $loop ) ) {
 			return;
 		}
 
