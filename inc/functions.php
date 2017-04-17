@@ -97,7 +97,7 @@ if ( ! function_exists( 'ta_get_term_class' ) ) {
 
 		return array_unique( array_map( 'esc_attr', $classes ) );
 	}
-}
+} // End if().
 
 if ( ! function_exists( 'ta_get_term_content' ) ) {
 	/**
