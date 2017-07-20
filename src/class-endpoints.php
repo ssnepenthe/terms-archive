@@ -28,6 +28,13 @@ class Endpoints {
 	protected $disabled_taxonomies;
 
 	/**
+	 * Term loop instance.
+	 *
+	 * @var Loop
+	 */
+	protected $loop;
+
+	/**
 	 * Whitelist of taxonomies which have rewrite rules, used for validation.
 	 *
 	 * @var array
