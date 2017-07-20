@@ -1,6 +1,6 @@
 {
     "name": "ssnepenthe/terms-archive",
-    "description": "",
+    "description": "A WordPress plugin for creating frontend terms archives.",
     "type": "wordpress-plugin",
     "homepage": "https://github.com/ssnepenthe/terms-archive",
     "license": "GPL-2.0",
