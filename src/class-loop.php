@@ -129,7 +129,7 @@ class Loop {
 	 */
 	public function get_total_pages() {
 		if ( is_null( $this->total_pages ) ) {
-			$query = new WP_Term_Query;
+			$query = new WP_Term_Query();
 
 			$term_count = $query->query( [
 				'fields'   => 'count',

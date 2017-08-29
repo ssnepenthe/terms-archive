@@ -7,8 +7,8 @@
 
 ?><article id="term-<?php echo esc_attr( ta_get_term_id() ); ?>" <?php ta_the_term_class(); ?>>
 	<?php
-		// Consider implementing featured images for terms. Remember to filter
-		// ta_term_class - Twentyfifteen needs has-post-thumbnail for proper styling.
+		// Consider implementing featured images for terms. Remember to filter "ta_term_class" -
+		// twentyfifteen needs the "has-post-thumbnail" class for proper styling.
 	?>
 
 	<header class="entry-header">
@@ -20,17 +20,21 @@
 	</header><!-- .entry-header -->
 
 	<div class="entry-content">
-		<?php // Term description gets kses, wpautop, etc on save. ?>
-		<?php echo ta_get_term_content(); // WPCS: XSS OK. ?>
+		<?php
+			// Term description gets kses, wpautop, etc on save.
+			echo ta_get_term_content(); // WPCS: XSS OK.
+		?>
 	</div><!-- .entry-content -->
 
 	<footer class="entry-footer">
 		<?php tf_child_entry_meta(); ?>
-		<?php edit_term_link(
-			'Edit',
-			'<span class="edit-link">',
-			'</span>',
-			ta_get_current_term()
-		); ?>
+		<?php
+			edit_term_link(
+				'Edit',
+				'<span class="edit-link">',
+				'</span>',
+				ta_get_current_term()
+			);
+		?>
 	</footer><!-- .entry-footer -->
 </article><!-- #post-## -->

@@ -211,6 +211,9 @@ if ( ! function_exists( 'ta_get_term_permalink' ) ) {
 	 * @param  string           $taxonomy The taxonomy to look in.
 	 *
 	 * @return string
+	 *
+	 * @todo The result of "get_term_link()" is not cached when performing lookup by slug. Consider
+	 *       creating a function wrapper such as the one used in WP-VIP.
 	 */
 	function ta_get_term_permalink( $term = null, $taxonomy = '' ) {
 		$loop = ta_get_loop();
@@ -228,7 +231,7 @@ if ( ! function_exists( 'ta_get_term_permalink' ) ) {
 			$taxonomy = ta_get_queried_taxonomy();
 		}
 
-		return get_term_link( $term, $taxonomy );
+		return get_term_link( $term, $taxonomy ); // @codingStandardsIgnoreLine
 	}
 }
 

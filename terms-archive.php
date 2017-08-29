@@ -44,7 +44,7 @@ function _ta_bootstrap() {
 		return;
 	}
 
-	$plugin = new SSNepenthe\Terms_Archive\Plugin;
+	$plugin = new SSNepenthe\Terms_Archive\Plugin();
 	$plugin->init();
 
 	register_activation_hook( __FILE__, [ $plugin, 'activate' ] );

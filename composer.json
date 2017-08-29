@@ -10,8 +10,7 @@
         "ssnepenthe/wp-requirements": "^0.1"
     },
     "require-dev": {
-        "psy/psysh": "^0.8",
-        "wp-coding-standards/wpcs": "^0.11"
+        "psy/psysh": "^0.8"
     },
     "autoload": {
         "classmap": ["src/"],

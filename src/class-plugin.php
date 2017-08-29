@@ -71,7 +71,7 @@ class Plugin {
 		 * pages where loop is unused.
 		 */
 		if ( ! isset( $GLOBALS['ta_loop'] ) ) {
-			$GLOBALS['ta_loop'] = new Loop;
+			$GLOBALS['ta_loop'] = new Loop();
 		}
 
 		return $GLOBALS['ta_loop'];
@@ -100,7 +100,7 @@ class Plugin {
 				$this->get_settings()->get( 'disabled', [] ),
 				$this->get_loop()
 			),
-			new Views,
+			new Views(),
 		];
 
 		foreach ( $features as $feature ) {

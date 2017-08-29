@@ -112,9 +112,9 @@ class Endpoints {
 
 	/**
 	 * Filter current_theme_supports() such that all of the following are valid:
-	 * 		add_theme_support( 'ta-terms-archive' )
-	 * 		add_theme_support( 'ta-terms-archive', 'category' )
-	 * 		add_theme_support( 'ta-terms-archive', [ 'category', 'post_tags' ] )
+	 *     add_theme_support( 'ta-terms-archive' )
+	 *     add_theme_support( 'ta-terms-archive', 'category' )
+	 *     add_theme_support( 'ta-terms-archive', [ 'category', 'post_tags' ] )
 	 *
 	 * @param  bool  $supports Whether current theme supports a given feature.
 	 * @param  array $args     Args passed to current_theme_supports().
