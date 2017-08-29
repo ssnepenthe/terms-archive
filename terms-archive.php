@@ -20,30 +20,51 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
+/**
+ * Initialize the plugin.
+ *
+ * @return void
+ */
+function _ta_bootstrap() {
+	static $initialized = false;
+
+	if ( $initialized ) {
+		return;
+	}
+
+	$checker = WP_Requirements\Plugin_Checker::make( 'Terms Archive', __FILE__ )
+		// Short array syntax.
+		->php_at_least( '5.4' )
+		// Uses register_setting() with an array of args.
+		->wp_at_least( '4.7' );
+
+	if ( ! $checker->requirements_met() ) {
+		$checker->deactivate_and_notify();
+
+		return;
+	}
+
+	$plugin = new SSNepenthe\Terms_Archive\Plugin;
+	$plugin->init();
+
+	register_activation_hook( __FILE__, [ $plugin, 'activate' ] );
+	register_deactivation_hook( __FILE__, [ $plugin, 'deactivate' ] );
+
+	$initialized = true;
+}
+
+/**
+ * Require a file if it exists.
+ *
+ * @param  string $file Path to a file.
+ *
+ * @return void
+ */
 function _ta_require_if_exists( $file ) {
 	if ( file_exists( $file ) ) {
 		require_once $file;
 	}
 }
 
-_ta_require_if_exists( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' );
-
-$ta_checker = new WP_Requirements\Plugin_Checker( 'Terms Archive', __FILE__ );
-
-// Short array syntax.
-$ta_checker->php_at_least( '5.4' );
-
-// Uses register_setting() with an array of args.
-$ta_checker->wp_at_least( '4.7' );
-
-if ( $ta_checker->requirements_met() ) {
-	$ta_plugin = new SSNepenthe\Terms_Archive\Plugin;
-	$ta_plugin->init();
-
-	register_activation_hook( __FILE__, [ $ta_plugin, 'activate' ] );
-	register_deactivation_hook( __FILE__, [ $ta_plugin, 'deactivate' ] );
-} else {
-	$ta_checker->deactivate_and_notify();
-}
-
-unset( $ta_checker, $ta_plugin );
+_ta_require_if_exists( __DIR__ . '/vendor/autoload.php' );
+_ta_bootstrap();
