@@ -217,16 +217,16 @@ class Endpoints {
 	 * post data in an alternate method or from an alternate source. Keep an eye out
 	 * for unforseen side effects of squashing the query like this.
 	 *
-	 * @param  null     $posts Post data placeholder.
-	 * @param  WP_Query $query The main query object.
+	 * @param  array|null $posts Post data placeholder.
+	 * @param  WP_Query   $query The main query object.
 	 *
-	 * @return bool
+	 * @return false|array
 	 */
 	public function short_circuit_main_query( $posts, WP_Query $query ) {
 		if ( null !== $posts || ! $query->is_main_query() || ! $query->ta_is_terms_archive ) {
 			return $posts;
 		}
 
-		return false;
+		return [];
 	}
 }
