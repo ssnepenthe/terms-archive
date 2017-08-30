@@ -161,7 +161,7 @@ class Endpoints {
 		add_filter( 'query_vars', [ $this, 'add_query_var' ] );
 
 		add_action( 'parse_query', [ $this, 'modify_wp_query_issers' ], 1 );
-		add_action(
+		add_filter(
 			'posts_pre_query',
 			[ $this, 'short_circuit_main_query' ],
 			10,
