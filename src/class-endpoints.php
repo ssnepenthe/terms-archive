@@ -223,7 +223,7 @@ class Endpoints {
 	 * @return bool
 	 */
 	public function short_circuit_main_query( $posts, WP_Query $query ) {
-		if ( ! $query->ta_is_terms_archive || ! $query->is_main_query() ) {
+		if ( null !== $posts || ! $query->is_main_query() || ! $query->ta_is_terms_archive ) {
 			return $posts;
 		}
 
