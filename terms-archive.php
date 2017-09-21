@@ -71,7 +71,7 @@ function _ta_instance( $id = null ) {
 		'version' => '0.2.0',
 	] );
 
-	$instance->register( new SSNepenthe\Terms_Archive\Plugin_Provider() );
+	$instance->register( new Terms_Archive\Plugin_Provider() );
 
 	return _ta_instance( $id );
 }

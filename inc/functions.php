@@ -24,7 +24,7 @@ if ( ! function_exists( 'ta_get_loop' ) ) {
 	/**
 	 * Get the global loop.
 	 *
-	 * @return SSNepenthe\Terms_Archive\Loop
+	 * @return Terms_Archive\Loop
 	 */
 	function ta_get_loop() {
 		return _ta_instance( 'loop' );
@@ -42,7 +42,7 @@ if ( ! function_exists( 'ta_get_queried_taxonomy' ) ) {
 			return '';
 		}
 
-		return get_query_var( SSNepenthe\Terms_Archive\Endpoints::QUERY_VAR );
+		return get_query_var( Terms_Archive\Endpoints::QUERY_VAR );
 	}
 }
 
