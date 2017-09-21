@@ -1,6 +1,6 @@
 <?php
 
-namespace SSNepenthe\Terms_Archive;
+namespace Terms_Archive;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;

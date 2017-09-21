@@ -5,7 +5,7 @@
  * @package terms-archive
  */
 
-namespace SSNepenthe\Terms_Archive;
+namespace Terms_Archive;
 
 use WP_Query;
 
