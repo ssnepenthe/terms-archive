@@ -27,13 +27,7 @@ if ( ! function_exists( 'ta_get_loop' ) ) {
 	 * @return SSNepenthe\Terms_Archive\Loop
 	 */
 	function ta_get_loop() {
-		static $loop = null;
-
-		if ( null === $loop ) {
-			$loop = new SSNepenthe\Terms_Archive\Loop();
-		}
-
-		return $loop;
+		return _ta_instance( 'loop' );
 	}
 }
 

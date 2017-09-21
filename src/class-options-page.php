@@ -73,14 +73,6 @@ class Options_Page {
 	}
 
 	/**
-	 * Hooks the class in to WordPress.
-	 */
-	public function init() {
-		add_action( 'admin_init', [ $this, 'admin_init' ] );
-		add_action( 'admin_menu', [ $this, 'admin_menu' ] );
-	}
-
-	/**
 	 * Renders the disabled taxonomies field.
 	 */
 	public function render_disabled_taxonomies() {

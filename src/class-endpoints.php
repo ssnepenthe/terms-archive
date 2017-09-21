@@ -143,34 +143,6 @@ class Endpoints {
 	}
 
 	/**
-	 * Hook the class in to WordPress.
-	 */
-	public function init() {
-		add_filter(
-			'current_theme_supports-ta-terms-archive',
-			[ $this, 'current_theme_supports' ],
-			10,
-			3
-		);
-		add_filter(
-			'pre_handle_404',
-			[ $this, 'preempt_404_on_terms_archives' ],
-			10,
-			2
-		);
-		add_filter( 'query_vars', [ $this, 'add_query_var' ] );
-
-		add_action( 'parse_query', [ $this, 'modify_wp_query_issers' ], 1 );
-		add_filter(
-			'posts_pre_query',
-			[ $this, 'short_circuit_main_query' ],
-			10,
-			2
-		);
-		add_action( 'registered_taxonomy', [ $this, 'add_rewrites' ], 10, 3 );
-	}
-
-	/**
 	 * Modify "is_*" flags on main query object.
 	 *
 	 * @param  WP_Query $query Main WP_Query object.

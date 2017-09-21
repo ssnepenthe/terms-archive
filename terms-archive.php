@@ -44,13 +44,36 @@ function _ta_bootstrap() {
 		return;
 	}
 
-	$plugin = new SSNepenthe\Terms_Archive\Plugin();
-	$plugin->init();
+	$instance = _ta_instance();
 
-	register_activation_hook( __FILE__, [ $plugin, 'activate' ] );
-	register_deactivation_hook( __FILE__, [ $plugin, 'deactivate' ] );
+	require_once $instance['dir'] . 'inc/functions.php';
+
+	register_activation_hook( __FILE__, [ $instance, 'activate' ] );
+	register_deactivation_hook( __FILE__, [ $instance, 'deactivate' ] );
+
+	add_action( 'plugins_loaded', [ $instance, 'boot' ] );
 
 	$initialized = true;
+}
+
+function _ta_instance( $id = null ) {
+	static $instance = null;
+
+	if ( null !== $instance ) {
+		return null === $id ? $instance : $instance[ $id ];
+	}
+
+	$instance = new Metis\Container( [
+		'dir' => plugin_dir_path( __FILE__ ),
+		'file' => __FILE__,
+		'name' => 'Terms Archive',
+		'option_key' => 'ta_settings',
+		'version' => '0.2.0',
+	] );
+
+	$instance->register( new SSNepenthe\Terms_Archive\Plugin_Provider() );
+
+	return _ta_instance( $id );
 }
 
 /**
