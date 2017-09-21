@@ -60,24 +60,6 @@ class Plugin {
 	}
 
 	/**
-	 * Get the global loop instance, creating it as needed.
-	 *
-	 * @return Loop
-	 */
-	protected function get_loop() {
-		/**
-		 * Store in global for easy access from template files, queries are performed
-		 * on demand so there should be no real worry about unnecessary overhead on
-		 * pages where loop is unused.
-		 */
-		if ( ! isset( $GLOBALS['ta_loop'] ) ) {
-			$GLOBALS['ta_loop'] = new Loop();
-		}
-
-		return $GLOBALS['ta_loop'];
-	}
-
-	/**
 	 * Get the plugin settings instance, creating it as needed.
 	 *
 	 * @return Map_Option
@@ -98,7 +80,7 @@ class Plugin {
 		$features = [
 			new Endpoints(
 				$this->get_settings()->get( 'disabled', [] ),
-				$this->get_loop()
+				ta_get_loop()
 			),
 			new Views(),
 		];

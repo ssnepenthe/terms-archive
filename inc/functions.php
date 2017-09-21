@@ -16,13 +16,7 @@ if ( ! function_exists( 'ta_get_current_term' ) ) {
 	 * @return null|WP_Term
 	 */
 	function ta_get_current_term() {
-		$loop = ta_get_loop();
-
-		if ( is_null( $loop ) ) {
-			return null;
-		}
-
-		return $loop->get_current_term();
+		return ta_get_loop()->get_current_term();
 	}
 }
 
@@ -30,20 +24,16 @@ if ( ! function_exists( 'ta_get_loop' ) ) {
 	/**
 	 * Get the global loop.
 	 *
-	 * @return null|SSNepenthe\Terms_Archive\Loop
+	 * @return SSNepenthe\Terms_Archive\Loop
 	 */
 	function ta_get_loop() {
-		global $ta_loop;
+		static $loop = null;
 
-		if ( is_null( $ta_loop ) ) {
-			_doing_it_wrong(
-				__FUNCTION__,
-				'The terms archive loop has not been initialized yet.',
-				null
-			);
+		if ( null === $loop ) {
+			$loop = new SSNepenthe\Terms_Archive\Loop();
 		}
 
-		return $ta_loop;
+		return $loop;
 	}
 }
 
@@ -84,16 +74,9 @@ if ( ! function_exists( 'ta_get_term_class' ) ) {
 
 		$classes[] = 'ta-term';
 		$classes[] = 'ta-term-' . ta_get_term_id();
-		$classes[] = 'ta-term-taxonomy-' . sanitize_html_class(
-			ta_get_term_taxonomy()
-		);
+		$classes[] = 'ta-term-taxonomy-' . sanitize_html_class( ta_get_term_taxonomy() );
 
-		$classes = apply_filters(
-			'ta_term_class',
-			$classes,
-			$class,
-			ta_get_term_id()
-		);
+		$classes = apply_filters( 'ta_term_class', $classes, $class, ta_get_term_id() );
 
 		return array_unique( array_map( 'esc_attr', $classes ) );
 	}
@@ -109,10 +92,7 @@ if ( ! function_exists( 'ta_get_term_content' ) ) {
 	 * @return string
 	 */
 	function ta_get_term_content( $term = null, $taxonomy = '' ) {
-		$loop = ta_get_loop();
-		$initialized = ! is_null( $loop );
-
-		if ( ! $taxonomy && $initialized ) {
+		if ( ! $taxonomy ) {
 			$taxonomy = ta_get_queried_taxonomy();
 		}
 
@@ -136,18 +116,15 @@ if ( ! function_exists( 'ta_get_term_count' ) ) {
 	 * @return int
 	 */
 	function ta_get_term_count( $term = null, $taxonomy = '' ) {
-		$loop = ta_get_loop();
-		$initialized = ! is_null( $loop );
-
-		if ( is_null( $term ) && ta_is_terms_archive() && $initialized ) {
-			$term = $loop->get_current_term();
+		if ( null === $term && ta_is_terms_archive() ) {
+			$term = ta_get_current_term();
 		}
 
-		if ( is_null( $term ) ) {
+		if ( null === $term ) {
 			return 0;
 		}
 
-		if ( ! $taxonomy && $initialized ) {
+		if ( ! $taxonomy ) {
 			$taxonomy = ta_get_queried_taxonomy();
 		}
 
@@ -179,18 +156,15 @@ if ( ! function_exists( 'ta_get_term_id' ) ) {
 	 * @return int
 	 */
 	function ta_get_term_id( $term = null, $taxonomy = '' ) {
-		$loop = ta_get_loop();
-		$initialized = ! is_null( $loop );
-
-		if ( is_null( $term ) && ta_is_terms_archive() && $initialized ) {
-			$term = $loop->get_current_term();
+		if ( null === $term && ta_is_terms_archive() ) {
+			$term = ta_get_current_term();
 		}
 
-		if ( is_null( $term ) ) {
+		if ( null === $term ) {
 			return 0;
 		}
 
-		if ( ! $taxonomy && $initialized ) {
+		if ( ! $taxonomy ) {
 			$taxonomy = ta_get_queried_taxonomy();
 		}
 
@@ -216,18 +190,15 @@ if ( ! function_exists( 'ta_get_term_permalink' ) ) {
 	 *       creating a function wrapper such as the one used in WP-VIP.
 	 */
 	function ta_get_term_permalink( $term = null, $taxonomy = '' ) {
-		$loop = ta_get_loop();
-		$initialized = ! is_null( $loop );
-
-		if ( is_null( $term ) && ta_is_terms_archive() && $initialized ) {
-			$term = $loop->get_current_term();
+		if ( null === $term && ta_is_terms_archive() ) {
+			$term = ta_get_current_term();
 		}
 
-		if ( is_null( $term ) ) {
+		if ( null === $term ) {
 			return '';
 		}
 
-		if ( ! $taxonomy && $initialized ) {
+		if ( ! $taxonomy ) {
 			$taxonomy = ta_get_queried_taxonomy();
 		}
 
@@ -245,18 +216,15 @@ if ( ! function_exists( 'ta_get_term_taxonomy' ) ) {
 	 * @return string
 	 */
 	function ta_get_term_taxonomy( $term = null, $taxonomy = '' ) {
-		$loop = ta_get_loop();
-		$initialized = ! is_null( $loop );
-
-		if ( is_null( $term ) && ta_is_terms_archive() && $initialized ) {
-			$term = $loop->get_current_term();
+		if ( null === $term && ta_is_terms_archive() ) {
+			$term = ta_get_current_term();
 		}
 
-		if ( is_null( $term ) ) {
+		if ( null === $term ) {
 			return '';
 		}
 
-		if ( ! $taxonomy && $initialized ) {
+		if ( ! $taxonomy ) {
 			$taxonomy = ta_get_queried_taxonomy();
 		}
 
@@ -274,18 +242,15 @@ if ( ! function_exists( 'ta_get_term_title' ) ) {
 	 * @return string
 	 */
 	function ta_get_term_title( $term = null, $taxonomy = '' ) {
-		$loop = ta_get_loop();
-		$initialized = ! is_null( $loop );
-
-		if ( is_null( $term ) && ta_is_terms_archive() && $initialized ) {
-			$term = $loop->get_current_term();
+		if ( null === $term && ta_is_terms_archive() ) {
+			$term = ta_get_current_term();
 		}
 
-		if ( is_null( $term ) ) {
+		if ( null === $term ) {
 			return '';
 		}
 
-		if ( ! $taxonomy && $initialized ) {
+		if ( ! $taxonomy ) {
 			$taxonomy = ta_get_queried_taxonomy();
 		}
 
@@ -303,12 +268,13 @@ if ( ! function_exists( 'ta_get_terms_pagination' ) ) {
 	 * @return string
 	 */
 	function ta_get_terms_pagination( $args = [] ) {
-		$loop = ta_get_loop();
 		$navigation = '';
 
-		if ( is_null( $loop ) ) {
+		if ( ! ta_is_terms_archive() ) {
 			return $navigation;
 		}
+
+		$loop = ta_get_loop();
 
 		$args = wp_parse_args( $args, [
 			'current'            => $loop->get_current_page(),
@@ -327,11 +293,7 @@ if ( ! function_exists( 'ta_get_terms_pagination' ) ) {
 		$links = paginate_links( $args );
 
 		if ( $links ) {
-			$navigation = _navigation_markup(
-				$links,
-				'pagination',
-				'Terms navigation'
-			);
+			$navigation = _navigation_markup( $links, 'pagination', 'Terms navigation' );
 		}
 
 		return $navigation;
@@ -345,13 +307,11 @@ if ( ! function_exists( 'ta_have_terms' ) ) {
 	 * @return bool
 	 */
 	function ta_have_terms() {
-		$loop = ta_get_loop();
-
-		if ( ! ta_is_terms_archive() || is_null( $loop ) ) {
+		if ( ! ta_is_terms_archive() ) {
 			return false;
 		}
 
-		return $loop->have_terms();
+		return ta_get_loop()->have_terms();
 	}
 }
 
@@ -377,13 +337,11 @@ if ( ! function_exists( 'ta_the_term' ) ) {
 	 * Set up the current term within the term loop.
 	 */
 	function ta_the_term() {
-		$loop = ta_get_loop();
-
-		if ( ! ta_is_terms_archive() || is_null( $loop ) ) {
+		if ( ! ta_is_terms_archive() ) {
 			return;
 		}
 
-		$loop->the_term();
+		ta_get_loop()->the_term();
 	}
 }
 
