@@ -45,6 +45,6 @@ add_action( 'wp_enqueue_scripts', function() {
  */
 function tf_child_entry_meta() {
 	echo '<span class="post-count">';
-		echo esc_html( ta_get_term_count() ) . ' posts';
+		echo esc_html( Terms_Archive\get_term_count() ) . ' posts';
 	echo '</span>';
 }
