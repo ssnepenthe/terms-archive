@@ -37,20 +37,6 @@ class Views {
 	}
 
 	/**
-	 * Hooks the class in to WordPress.
-	 */
-	public function init() {
-		add_filter( 'body_class', [ $this, 'add_body_classes' ] );
-		add_filter( 'document_title_parts', [ $this, 'set_document_title' ] );
-		add_filter(
-			'get_the_archive_description',
-			[ $this, 'set_archive_description' ]
-		);
-		add_filter( 'get_the_archive_title', [ $this, 'set_archive_title' ] );
-		add_filter( 'template_include', [ $this, 'template_include' ] );
-	}
-
-	/**
 	 * Override the output of the_archive_description() for terms archive pages.
 	 *
 	 * @param string $description Archive description.
