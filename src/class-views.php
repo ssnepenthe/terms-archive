@@ -22,7 +22,7 @@ class Views {
 	 * @param array $classes List of body classes.
 	 */
 	public function add_body_classes( array $classes ) {
-		if ( ! ta_is_terms_archive() ) {
+		if ( ! is_terms_archive() ) {
 			return $classes;
 		}
 
@@ -42,7 +42,7 @@ class Views {
 	 * @param string $description Archive description.
 	 */
 	public function set_archive_description( $description ) {
-		if ( ! ta_is_terms_archive() ) {
+		if ( ! is_terms_archive() ) {
 			return $description;
 		}
 
@@ -61,7 +61,7 @@ class Views {
 	 * @param string $title The archive title.
 	 */
 	public function set_archive_title( $title ) {
-		if ( ! ta_is_terms_archive() ) {
+		if ( ! is_terms_archive() ) {
 			return $title;
 		}
 
@@ -80,7 +80,7 @@ class Views {
 	 * @param array $parts Title parts.
 	 */
 	public function set_document_title( array $parts ) {
-		if ( ! ta_is_terms_archive() ) {
+		if ( ! is_terms_archive() ) {
 			return $parts;
 		}
 
@@ -105,7 +105,7 @@ class Views {
 	 * @return string
 	 */
 	public function template_include( $template ) {
-		if ( ! ta_is_terms_archive() ) {
+		if ( ! is_terms_archive() ) {
 			return $template;
 		}
 
