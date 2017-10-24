@@ -64,6 +64,14 @@ function get_term_class( $class = [] ) {
 	$classes[] = 'ta-term-' . get_term_id();
 	$classes[] = 'ta-term-taxonomy-' . sanitize_html_class( get_term_taxonomy() );
 
+	$current = get_current_term();
+
+	if ( $current->parent ) {
+		$classes[] = 'ta-parent-term-id-' . absint( $current->parent );
+		$classes[] = 'ta-term-has-parent';
+		$classes[] = 'ta-term-is-child';
+	}
+
 	$classes = apply_filters( 'ta_term_class', $classes, $class, get_term_id() );
 
 	return array_unique( array_map( 'esc_attr', $classes ) );
