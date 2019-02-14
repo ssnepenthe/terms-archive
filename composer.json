@@ -11,9 +11,22 @@
         "ssnepenthe/wp-requirements": "^0.1"
     },
     "require-dev": {
-        "psy/psysh": "^0.8"
+        "phpunit/phpunit": "^7.5",
+        "psy/psysh": "^0.9",
+        "ssnepenthe/ssn-test-kit": "*"
     },
     "autoload": {
         "classmap": ["src/"]
-    }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../../../../../../../Code/ssn-test-kit/",
+            "options": {
+                "symlink": false
+            }
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
