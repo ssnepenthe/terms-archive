@@ -8,6 +8,7 @@ class ViewsTest extends TaTestCase
         $this->activateTheme('ta-twentyfifteen-child');
         $this->activatePlugin('terms-archive');
 
+        // Because ->assertStringContainsString('ta-terms-archive', $classList) wouldn't be reliable.
         $bodyClasses = array_flip(
             explode(' ', $this->browser()->get('/category/')->filter('body')->attr('class'))
         );

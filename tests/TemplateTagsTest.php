@@ -19,7 +19,7 @@ class TemplateTagsTest extends TaTestCase
         $cat = $this->createCategory('A Category');
         $post = $this->createPost('A Post', 'Some post content.');
 
-        $this->addCategoryToPost($post, $cat);
+        $this->addCategoriesToPost($post, $cat);
 
         $this->login();
 
@@ -58,7 +58,7 @@ class TemplateTagsTest extends TaTestCase
         $cat = $this->createCategory('A Category', 'Just a category description.');
         $post = $this->createPost('A Post', 'Some post content.');
 
-        $this->addCategoryToPost($post, $cat);
+        $this->addCategoriesToPost($post, $cat);
 
         $response = $this->browser()->get('/category/');
 
@@ -79,7 +79,7 @@ class TemplateTagsTest extends TaTestCase
         $cat = $this->createCategory('A Category');
         $post = $this->createPost('A Post', 'Some post content.');
 
-        $this->addCategoryToPost($post, $cat);
+        $this->addCategoriesToPost($post, $cat);
 
         $this->assertEquals(
             '1 posts', // Yes, I know...
@@ -88,7 +88,7 @@ class TemplateTagsTest extends TaTestCase
 
         $post2 = $this->createPost('Another Post', 'Some more post content.');
 
-        $this->addCategoryToPost($post2, $cat);
+        $this->addCategoriesToPost($post2, $cat);
 
         $this->assertEquals(
             '2 posts',
@@ -105,7 +105,7 @@ class TemplateTagsTest extends TaTestCase
         $cat = $this->createCategory('A Category');
         $post = $this->createPost('A Post', 'Some post content.');
 
-        $this->addCategoryToPost($post, $cat);
+        $this->addCategoriesToPost($post, $cat);
 
         $this->browser()
             ->get('/category/')
@@ -122,7 +122,7 @@ class TemplateTagsTest extends TaTestCase
         $cat = $this->createCategory('A Category');
         $post = $this->createPost('A Post', 'Some post content.');
 
-        $this->addCategoryToPost($post, $cat);
+        $this->addCategoriesToPost($post, $cat);
 
         $response = $this->browser()->get('/category/');
 
@@ -142,7 +142,7 @@ class TemplateTagsTest extends TaTestCase
         $cat = $this->createCategory('A Category');
         $post = $this->createPost('A Post', 'Some post content.');
 
-        $this->addCategoryToPost($post, $cat);
+        $this->addCategoriesToPost($post, $cat);
 
         $response = $this->browser()->get('/category/');
 
@@ -161,7 +161,7 @@ class TemplateTagsTest extends TaTestCase
         $cat = $this->createCategory('A Category');
         $post = $this->createPost('A Post', 'Some post content.');
 
-        $this->addCategoryToPost($post, $cat);
+        $this->addCategoriesToPost($post, $cat);
 
         $response = $this->browser()->get('/category/');
 
@@ -177,7 +177,7 @@ class TemplateTagsTest extends TaTestCase
         $this->activateTheme('ta-twentyfifteen-child');
         $this->activatePlugin('terms-archive');
 
-        $postId = $this->generatePosts();
+        [$postId] = $this->generatePosts(1);
         $categories = $this->generateCategories(9); // Plus "uncategorized" makes 10
 
         $this->addCategoriesToPost($postId, ...$categories);
@@ -228,13 +228,14 @@ class TemplateTagsTest extends TaTestCase
     /** @test */
     public function test_the_term_class()
     {
+        // @todo See ViewsTest @ body class method
         $this->activateTheme('ta-twentyfifteen-child');
         $this->activatePlugin('terms-archive');
 
-        $postId = $this->generatePosts();
-        $tagId = $this->generateTags();
+        [$postId] = $this->generatePosts(1);
+        [$tagId] = $this->generateTags(1);
 
-        $this->addTagToPost($postId, $tagId);
+        $this->addTagsToPost($postId, $tagId);
 
         $termClass = $this->browser()->get('/tag/')->filter('article')->attr('class');
 
