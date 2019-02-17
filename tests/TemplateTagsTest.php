@@ -178,21 +178,15 @@ class TemplateTagsTest extends TaTestCase
         $this->activatePlugin('terms-archive');
 
         $postId = $this->generatePosts();
-        $categories = $this->generateCategories(9); // Starts with "uncategorized" for a total of 10.
+        $categories = $this->generateCategories(9); // Plus "uncategorized" makes 10
 
-        foreach ($categories as $catId) {
-            $this->addCategoryToPost($postId, $catId);
-        }
+        $this->addCategoriesToPost($postId, ...$categories);
 
-        $response = $this->browser()->get('/category/');
-
-        $this->assertCount(0, $response->filter('.pagination'));
+        $this->assertCount(0, $this->browser()->get('/category/page/2/')->filter('.pagination'));
 
         $categories = $this->generateCategories(10); // Total of 20.
 
-        foreach ($categories as $catId) {
-            $this->addCategoryToPost($postId, $catId);
-        }
+        $this->addCategoriesToPost($postId, ...$categories);
 
         $response = $this->browser()->get('/category/');
 

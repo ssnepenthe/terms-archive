@@ -18,19 +18,16 @@ class EndpointsTest extends TaTestCase
         $this->activateTheme('ta-twentyfifteen-child');
         $this->activatePlugin('terms-archive');
 
-        $post = $this->generatePosts();
+        [$post] = $this->generatePosts(1);
 
-        foreach ([
-            // @todo Eventually terms per page will be overridable and this number will need to be adjusted.
-            'category' => $this->generateCategories(11),
-            'post_tag' => $this->generateTags(11),
-            'post_format' => $this->generateTerms('post_format', 11),
-        ] as $taxonomy => $ids) {
-            foreach ($ids as $term) {
-                // @todo String? Not a string?
-                $this->addTermToPost((string) $post, $taxonomy, (string) $term);
-            }
-        }
+        // @todo Eventually terms per page will be overridable and this number will need to be adjusted.
+        $categories = $this->generateCategories(11);
+        $tags = $this->generateTags(11);
+        $formats = $this->generateTerms('post_format', 11);
+
+        $this->setPostCategories($post, ...$categories);
+        $this->setPostTags($post, ...$tags);
+        $this->setPostTerms($post, 'post_format', ...$formats);
 
         $this->browser()->get('/category/')->assertOk();
         $this->browser()->get('/category/page/2/')->assertOk();
